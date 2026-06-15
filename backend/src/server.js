@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(distPath));
     
     // Use '*' to catch all frontend routes for your Single Page App (SPA)
-    app.get("*", (req, res) => {
+    app.get("/.*/", (req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
     }); 
 }

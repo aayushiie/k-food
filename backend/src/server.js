@@ -20,11 +20,24 @@ app.get('/api/health', (req, res)=>{
 })
 
 // in production
-if (ENV.NODE_ENV === "production"){
-    app.use(express.static(path.join(__dirname, "../../admin/dist")))
-    app.get("/{*any}", (req, res)=>{
-        res.sendFile(path.join(__dirname, "../../admin", "dist", "index.html"))
-    })
+// if (ENV.NODE_ENV === "production"){
+//     app.use(express.static(path.join(__dirname, "../admin/dist")))
+//     app.get("/{*any}", (req, res)=>{
+//         res.sendFile(path.join(__dirname, "../admin", "dist", "index.html"))
+//     })
+// }
+
+if (process.env.NODE_ENV === "production") {
+    // 1. Ensure you use 'process.env' instead of 'ENV'
+    // 2. Adjust the path relative to where this specific file sits
+    const distPath = path.resolve(__dirname, "../admin/dist");
+    
+    app.use(express.static(distPath));
+    
+    // Use '*' to catch all frontend routes for your Single Page App (SPA)
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+    }); 
 }
 
 const startServer = async () =>{

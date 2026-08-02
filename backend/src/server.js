@@ -5,16 +5,18 @@ import { connectDB } from './config/db.js'
 import { clerkMiddleware } from '@clerk/express'
 import {serve} from "inngest/express"
 import {functions, inngest} from "./config/inngest.js"
+import cors from "cors"
 
 const app = express()
 
 const __dirname = path.resolve()
 
 app.use(express.json())
+
+app.use("/api/inngest", serve({client:inngest, functions:functions}))
+
 app.use(clerkMiddleware()) // adds auth object under req => req.auth
 
-// from docs
-app.use("/api/inngest", serve({client:inngest, functions:functions}))
 
 app.get('/api/health', (req, res)=>{
     res.status(200).json({message: "Success"})

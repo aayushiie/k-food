@@ -8,6 +8,7 @@ import {functions, inngest} from "./config/inngest.js"
 import cors from "cors"
 
 import adminRoutes from "./routes/admin.route.js";
+import userRoutes from "./routes/user.route.js";
 
 
 
@@ -22,6 +23,7 @@ app.use("/api/inngest", serve({client:inngest, functions:functions}))
 app.use(clerkMiddleware()) // adds auth object under req => req.auth
 
 app.use("/api/admin", adminRoutes)
+app.use("/api/users", userRoutes)
 
 app.get('/api/health', (req, res)=>{
     res.status(200).json({message: "Success"})
